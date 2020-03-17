@@ -1,6 +1,8 @@
 #pragma once
 #include<iostream>
+#include<sstream>
 #include "ogrsf_frmts.h"
+using namespace std;
 
 class ShpFileWriter{
 	private:
@@ -9,8 +11,9 @@ class ShpFileWriter{
 		GDALDriver *poDriver;
 		GDALDataset *poDataSet;
 		OGRLayer *poLayer;
-		OGRSpatialReference* poSRS;
+		OGRSpatialReference *poSRS;
 		std::vector<std::string> headers;
+		std::vector<OGRFieldType> fieldTypes;
 		//std::vector<char> datatypes;
 		int numberofvars;
 
@@ -30,9 +33,23 @@ class ShpFileWriter{
 		void initAppend();
 
 		void setHeaders(std::vector<std::string>);
+		void setFieldDatatypes(std::vector<OGRFieldType>);
 
 		void writeSingleValue(double val, double x, double y);
-		void writeVector();
+		void writeMultiValue(std::string valAsCsv, double x, double y);
+
+		static std::vector<std::string> tokenize(std::string s) {
+			//stringstream ss("1,1,1,1, or something else ,1,1,1,0");
+			stringstream ss(s);
+			vector<string> result;
+
+			while (ss.good())
+			{
+				string substr;
+				getline(ss, substr, ',');
+				result.push_back(substr);
+			}
+		}
 
 };
 

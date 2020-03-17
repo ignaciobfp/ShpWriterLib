@@ -53,14 +53,21 @@ void ShpFileWriter::initAppend()
 	poLayer = poDataSet->GetLayer(0); 
 	auto *poFeature = poLayer->GetFeature(0);
 	headers.clear();
+	fieldTypes.clear();
 	for (auto && oField: *poFeature) {
 		headers.push_back(oField.GetName());
+		fieldTypes.push_back(oField.GetType());
 	}
 }
 
 void ShpFileWriter::setHeaders(std::vector<std::string> inh)
 {
 	headers = inh;
+}
+
+void ShpFileWriter::setFieldDatatypes(std::vector<OGRFieldType> indt)
+{
+	fieldTypes = indt;
 }
 
 void ShpFileWriter::writeSingleValue(double val, double x, double y)
@@ -86,6 +93,37 @@ void ShpFileWriter::writeSingleValue(double val, double x, double y)
 
 }
 
-void ShpFileWriter::writeVector()
+void ShpFileWriter::writeMultiValue(std::string valAsCsv, double x, double y)
 {
+	OGRFeature *poFeature;
+	OGRGeometry *poGeometry;
+	char sWKT[60];
+
+	poFeature = OGRFeature::CreateFeature(poLayer->GetLayerDefn());
+
+	vector<string> valAsVector = tokenize(valAsCsv);
+	
+	if (fieldTypes.size() != valAsVector.size())
+		return;
+
+	for (auto i = 0; i < headers.size(); ++i) {
+		switch (fieldTypes[i]) {
+		case OGRFieldType::OFTInteger:
+			poFeature->SetField(headers[i].c_str(), std::stoi(valAsVector[i]));
+			break;
+		case OGRFieldType::OFTReal:
+			poFeature->SetField(headers[i].c_str(), std::stod(valAsVector[i]));
+			break;
+		default:
+		}
+	}
+
+	generateWKT(x, y, sWKT);
+	OGRGeometryFactory::createFromWkt(sWKT, NULL, &poGeometry);
+	poFeature->SetGeomFieldDirectly(0, poGeometry);
+
+
+	if (poLayer->CreateFeature(poFeature) != OGRERR_NONE) {
+		printf("Failed to create feature.\n");
+	}
 }
