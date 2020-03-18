@@ -46,6 +46,28 @@ void ShpFileWriter::init()
 	}
 }
 
+void ShpFileWriter::init(vector<string> headers)
+{
+	this->setHeaders(headers);
+	vector<OGRFieldType> dtypes;
+	for (int i = 0; i < headers.size(); ++i)
+		dtypes.push_back(OGRFieldType::OFTReal);
+	init();
+}
+
+void ShpFileWriter::init(vector<string> headers, vector<OGRFieldType> dataTypes)
+{
+	this->setHeaders(headers);
+	this->setFieldDatatypes(dataTypes);
+	init();
+}
+
+void ShpFileWriter::init(vector<string> headers, string dataTypesString)
+{
+	this->setHeaders(headers);
+	this->setFieldDatatypes(dataTypesString);
+}
+
 void ShpFileWriter::initAppend()
 {
 	GDALAllRegister();
@@ -68,6 +90,11 @@ void ShpFileWriter::setHeaders(std::vector<std::string> inh)
 void ShpFileWriter::setFieldDatatypes(std::vector<OGRFieldType> indt)
 {
 	fieldTypes = indt;
+}
+
+void ShpFileWriter::setFieldDatatypes(std::string s)
+{
+	fieldTypes = getFieldTypesFromString(s);
 }
 
 void ShpFileWriter::writeSingleValue(double val, double x, double y)
@@ -115,6 +142,9 @@ void ShpFileWriter::writeMultiValue(std::string valAsCsv, double x, double y)
 			poFeature->SetField(headers[i].c_str(), std::stod(valAsVector[i]));
 			break;
 		default:
+			//If no compatible type is available, try to store the field as string
+			poFeature->SetField(headers[i].c_str(), valAsVector[i].c_str());
+			break;
 		}
 	}
 
