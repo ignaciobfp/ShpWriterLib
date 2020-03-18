@@ -1,4 +1,5 @@
 #pragma once
+#pragma warning(disable:4996)
 #include<iostream>
 #include<sstream>
 #include <iomanip>      // std::put_time
@@ -32,12 +33,16 @@ class ShpFileWriter{
 		ShpFileWriter(char* path);
 		~ShpFileWriter();
 
+		string getCurrentFilePath();
+
 		void init();
 		void init(vector<string> headers); //If no types are specified, we will assume every field is a double
 		void init(vector<string> headers, vector<OGRFieldType> dataTypes);
 		void init(vector<string> headers, string dataTypesString);
 		void initAppend();
 		void initAppend(string shp_path);
+
+		void newFile();
 
 		void setHeaders(vector<string>);
 		void setFieldDatatypes(vector<OGRFieldType>);

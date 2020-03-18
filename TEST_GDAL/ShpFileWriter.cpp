@@ -19,6 +19,11 @@ ShpFileWriter::~ShpFileWriter()
 	poSRS->Release();
 }
 
+string ShpFileWriter::getCurrentFilePath()
+{
+	return string(shp_path);
+}
+
 void ShpFileWriter::init()
 {
 	GDALAllRegister();
@@ -74,13 +79,18 @@ void ShpFileWriter::initAppend()
 {
 	GDALAllRegister();
 	poDataSet = (GDALDataset*)GDALOpenEx(shp_path.c_str(), GDAL_OF_VECTOR + GDAL_OF_UPDATE, NULL, NULL, NULL);
-	poLayer = poDataSet->GetLayer(0); 
-	auto *poFeature = poLayer->GetFeature(0);
-	headers.clear();
-	fieldTypes.clear();
-	for (auto && oField: *poFeature) {
-		headers.push_back(oField.GetName());
-		fieldTypes.push_back(oField.GetType());
+	if (poDataSet != NULL) {
+		poLayer = poDataSet->GetLayer(0);
+		auto *poFeature = poLayer->GetFeature(0);
+		headers.clear();
+		fieldTypes.clear();
+		for (auto && oField : *poFeature) {
+			headers.push_back(oField.GetName());
+			fieldTypes.push_back(oField.GetType());
+		}
+	}
+	else {
+		init();
 	}
 }
 
@@ -132,6 +142,7 @@ void ShpFileWriter::writeSingleValue(double val, double x, double y)
 		printf("Failed to create feature.\n");
 	}
 
+	poDataSet->FlushCache();
 }
 
 void ShpFileWriter::writeMultiValue(std::string valAsCsv, double x, double y)
@@ -170,4 +181,6 @@ void ShpFileWriter::writeMultiValue(std::string valAsCsv, double x, double y)
 	if (poLayer->CreateFeature(poFeature) != OGRERR_NONE) {
 		printf("Failed to create feature.\n");
 	}
+
+	poDataSet->FlushCache();
 }
