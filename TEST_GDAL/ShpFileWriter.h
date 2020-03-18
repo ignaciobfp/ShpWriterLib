@@ -1,6 +1,9 @@
 #pragma once
 #include<iostream>
 #include<sstream>
+#include <iomanip>      // std::put_time
+#include <ctime>        // std::time_t, struct std::tm, std::localtime
+#include <chrono>       // std::chrono::system_clock
 #include "ogrsf_frmts.h"
 using namespace std;
 
@@ -34,10 +37,11 @@ class ShpFileWriter{
 		void init(vector<string> headers, vector<OGRFieldType> dataTypes);
 		void init(vector<string> headers, string dataTypesString);
 		void initAppend();
+		void initAppend(string shp_path);
 
-		void setHeaders(std::vector<std::string>);
-		void setFieldDatatypes(std::vector<OGRFieldType>);
-		void setFieldDatatypes(std::string);
+		void setHeaders(vector<string>);
+		void setFieldDatatypes(vector<OGRFieldType>);
+		void setFieldDatatypes(string);
 
 		void writeSingleValue(double val, double x, double y);
 		void writeMultiValue(std::string valAsCsv, double x, double y);
@@ -57,9 +61,9 @@ class ShpFileWriter{
 		}
 
 		static vector<OGRFieldType> getFieldTypesFromString(string s) {
-			vector<string> s = tokenize(s);
+			vector<string> svec = tokenize(s);
 			vector<OGRFieldType> result;
-			for (int i = 0; i < s.size(); ++i) {
+			for (int i = 0; i < svec.size(); ++i) {
 				if (s == "d" || s == "D" || s == "r" || s == "R") {
 					result.push_back(OGRFieldType::OFTReal);
 				}
@@ -74,4 +78,20 @@ class ShpFileWriter{
 		}
 
 };
+
+inline vector<OGRFieldType> generateFTypesFromHeaders(vector<string> headers) {
+	vector<OGRFieldType> dtypes;
+	for (int i = 0; i < headers.size(); ++i)
+		dtypes.push_back(OGRFieldType::OFTReal);
+	return dtypes;
+}
+
+inline std::string generateTimestampedFileName() {
+	std::stringstream buf;
+	std::chrono::system_clock::time_point p = std::chrono::system_clock::now();
+	std::time_t t = std::chrono::system_clock::to_time_t(p);
+	std::tm tm = *std::localtime(&t);
+	buf << std::put_time(&tm, "%Y_%m_%d_%H_%M_%S.shp");
+	return buf.str();
+}
 

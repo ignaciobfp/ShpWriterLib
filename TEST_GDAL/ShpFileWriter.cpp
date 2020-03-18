@@ -2,7 +2,7 @@
 
 ShpFileWriter::ShpFileWriter()
 {
-	shp_path = "test.shp";
+	shp_path = generateTimestampedFileName();
 	poSRS = new OGRSpatialReference();
 	poSRS->importFromEPSG(4326);
 }
@@ -40,6 +40,10 @@ void ShpFileWriter::init()
 	oPointField.SetSpatialRef(poSRS);
 	poLayer = poDataSet->CreateLayer("points", poSRS, wkbPoint, NULL);
 
+	if (fieldTypes.size() != headers.size()) {
+		setFieldDatatypes(generateFTypesFromHeaders(headers));
+	}
+
 	for (int i = 0; i < headers.size(); ++i) {
 		OGRFieldDefn oField(headers[i].c_str(), OGRFieldType::OFTReal);
 		poLayer->CreateField(&oField);
@@ -49,9 +53,7 @@ void ShpFileWriter::init()
 void ShpFileWriter::init(vector<string> headers)
 {
 	this->setHeaders(headers);
-	vector<OGRFieldType> dtypes;
-	for (int i = 0; i < headers.size(); ++i)
-		dtypes.push_back(OGRFieldType::OFTReal);
+	this->setFieldDatatypes(generateFTypesFromHeaders(headers));
 	init();
 }
 
@@ -80,6 +82,18 @@ void ShpFileWriter::initAppend()
 		headers.push_back(oField.GetName());
 		fieldTypes.push_back(oField.GetType());
 	}
+}
+
+void ShpFileWriter::initAppend(string path)
+{
+	shp_path = path;
+	initAppend();
+}
+
+void ShpFileWriter::newFile()
+{
+	shp_path = generateTimestampedFileName();
+	init();
 }
 
 void ShpFileWriter::setHeaders(std::vector<std::string> inh)
