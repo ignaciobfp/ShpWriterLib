@@ -16,7 +16,6 @@ ShpFileWriter::ShpFileWriter(char * path)
 
 ShpFileWriter::~ShpFileWriter()
 {
-	poSRS->Release();
 }
 
 string ShpFileWriter::getCurrentFilePath()

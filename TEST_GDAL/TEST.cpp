@@ -9,39 +9,45 @@ inline double fRand(double fMin, double fMax)
 
 int main() {
 	{
+		//Generar un archivo nuevo con una sola variable
 		ShpFileWriter s;
 		vector<string> headers;
 		headers.push_back("var1");
 		s.setHeaders(headers);
 		s.setFieldDatatypes("d");
 		s.init();
-		//s.initAppend();
-		for (int i = 0; i < 500; ++i) {
+		for (int i = 0; i < 1000; ++i) {
 			s.writeSingleValue(fRand(0, 100), -2.514276 + fRand(-0.001, 0.001), 42.444090 + fRand(-0.001, 0.001));
 		}
 	}
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	string previousFile = "";
 	{
+		//Generar un archivo nuevo con varias variables
 		ShpFileWriter s;
-		vector<string> headers;
-		headers.push_back("var1");
-		headers.push_back("var2");
-		headers.push_back("var3");
+		vector<string> headers = {"var1","var2","var3"};
 		s.setHeaders(headers);
 		s.setFieldDatatypes("d,d,d");
 		s.init();
 		for (int i = 0; i < 10; ++i) {
-			s.writeMultiValue(to_string(fRand(0, 1))+",2,3", -2.514276 + fRand(-0.001, 0.001), 42.444090 + fRand(-0.001, 0.001));
+			s.writeMultiValue(
+				to_string(fRand(0, 1))+",2,3",
+				-2.514276 + fRand(-0.001, 0.001),
+				42.444090 + fRand(-0.001, 0.001)
+			);
 		}
 		previousFile = s.getCurrentFilePath();
 	}
-	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	{
+		//Añadir datos a un archivo existente
 		ShpFileWriter s;
 		s.initAppend(previousFile);
 		for (int i = 0; i < 10; ++i) {
-			s.writeMultiValue(to_string(fRand(1, 10)) + ",2,3", -2.514276 + fRand(-0.001, 0.001), 42.444090 + fRand(-0.001, 0.001));
+			s.writeMultiValue(
+				to_string(fRand(10, 20)) + ",2,3",
+				-2.514276 + fRand(-0.001, 0.001),
+				42.444090 + fRand(-0.001, 0.001)
+			);
 		}
 	}
 }
