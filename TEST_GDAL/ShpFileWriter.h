@@ -49,6 +49,7 @@ class ShpFileWriter{
 		void setFieldDatatypes(string);
 
 		void writeSingleValue(double val, double x, double y);
+		void writeSingleValueString(char* val, double x, double y);
 		void writeMultiValue(std::string valAsCsv, double x, double y);
 
 		static vector<string> tokenize(string s) {

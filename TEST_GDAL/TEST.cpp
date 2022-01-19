@@ -29,6 +29,8 @@ int main() {
 		s.setHeaders(headers);
 		s.setFieldDatatypes("d,d,d");
 		s.init();
+		s.writeMultiValue("0,0,0",-2.514276, 42.444090);
+		/*
 		for (int i = 0; i < 10; ++i) {
 			s.writeMultiValue(
 				to_string(fRand(0, 1))+",2,3",
@@ -36,6 +38,7 @@ int main() {
 				42.444090 + fRand(-0.001, 0.001)
 			);
 		}
+		*/
 		previousFile = s.getCurrentFilePath();
 	}
 	{

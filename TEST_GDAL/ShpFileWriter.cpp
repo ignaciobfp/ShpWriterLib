@@ -144,6 +144,30 @@ void ShpFileWriter::writeSingleValue(double val, double x, double y)
 	poDataSet->FlushCache();
 }
 
+void ShpFileWriter::writeSingleValueString(char* val, double x, double y)
+{
+	OGRFeature* poFeature;
+	OGRGeometry* poGeometry;
+	char sWKT[60];
+
+	poFeature = OGRFeature::CreateFeature(poLayer->GetLayerDefn());
+
+	for (auto i = 0; i < headers.size(); ++i) {
+		poFeature->SetField(headers[i].c_str(), val);
+	}
+
+	generateWKT(x, y, sWKT);
+	OGRGeometryFactory::createFromWkt(sWKT, NULL, &poGeometry);
+	poFeature->SetGeomFieldDirectly(0, poGeometry);
+
+
+	if (poLayer->CreateFeature(poFeature) != OGRERR_NONE) {
+		printf("Failed to create feature.\n");
+	}
+
+	poDataSet->FlushCache();
+}
+
 void ShpFileWriter::writeMultiValue(std::string valAsCsv, double x, double y)
 {
 	OGRFeature *poFeature;
