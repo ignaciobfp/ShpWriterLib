@@ -114,6 +114,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\Televitis\source\repos\gdal-2.4.4\alg;C:\Users\Televitis\source\repos\gdal-2.4.4;C:\Users\Televitis\source\repos\gdal-2.4.4\gcore;C:\Users\Televitis\source\repos\gdal-2.4.4\apps;C:\Users\Televitis\source\repos\gdal-2.4.4\port;C:\Users\Televitis\source\repos\gdal-2.4.4\ogr;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$C:\Users\Televitis\source\repos\gdal-2.4.4\alg;$C:\Users\Televitis\source\repos\gdal-2.4.4\gcore;$C:\Users\Televitis\source\repos\gdal-2.4.4\port;$C:\Users\Televitis\source\repos\gdal-2.4.4\apps;$C:\Users\Televitis\source\repos\gdal-2.4.4\ogr;$C:\Users\Televitis\source\repos\gdal-2.4.4;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -126,6 +128,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\Televitis\source\repos\gdal-2.4.4;C:\Users\Televitis\source\repos\gdal-2.4.4\gcore;C:\Users\Televitis\source\repos\gdal-2.4.4\apps;C:\Users\Televitis\source\repos\gdal-2.4.4\port;C:\Users\Televitis\source\repos\gdal-2.4.4\ogr;C:\Users\Televitis\source\repos\gdal-2.4.4\ogr\ogrsf_frmts;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$C:\Users\Televitis\source\repos\gdal-2.4.4\ogr\ogrsf_frmts;$C:\Users\Televitis\source\repos\gdal-2.4.4\gcore;$C:\Users\Televitis\source\repos\gdal-2.4.4\port;$C:\Users\Televitis\source\repos\gdal-2.4.4\apps;$C:\Users\Televitis\source\repos\gdal-2.4.4\ogr;$C:\Users\Televitis\source\repos\gdal-2.4.4;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release DLL|Win32'">
     <LinkIncremental>false</LinkIncremental>

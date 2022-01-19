@@ -5,7 +5,8 @@
 #include <iomanip>      // std::put_time
 #include <ctime>        // std::time_t, struct std::tm, std::localtime
 #include <chrono>       // std::chrono::system_clock
-#include "ogrsf_frmts.h"
+#include <gdal.h>
+#include <ogrsf_frmts/ogrsf_frmts.h>
 using namespace std;
 
 class ShpFileWriter{

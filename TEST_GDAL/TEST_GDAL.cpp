@@ -2,7 +2,7 @@
 //
 #pragma warning(disable : 4996)
 #include <iostream>
-#include "ogrsf_frmts.h"
+#include <ogrsf_frmts/ogrsf_frmts.h>
 
 int main500()
 {
