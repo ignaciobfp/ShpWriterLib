@@ -51,6 +51,8 @@ class ShpFileWriter{
 
 		void writeSingleValue(double val, double x, double y);
 		void writeSingleValueString(char* val, double x, double y);
+		void writeCStringIntEfficient(const char* curr_string, int curr_int, double x, double y);
+		void writeCStringIntGPSEfficient(const char* curr_string, int dist, double x, double y, double heading, int fixStatus);
 		void writeMultiValue(std::string valAsCsv, double x, double y);
 
 		static vector<string> tokenize(string s) {

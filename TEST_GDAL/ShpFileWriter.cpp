@@ -168,6 +168,72 @@ void ShpFileWriter::writeSingleValueString(char* val, double x, double y)
 	poDataSet->FlushCache();
 }
 
+void ShpFileWriter::writeCStringIntEfficient(const char* curr_string, int curr_int, double x, double y)
+{
+	OGRFeature* poFeature;
+	OGRGeometry* poGeometry;
+	char sWKT[60];
+
+	poFeature = OGRFeature::CreateFeature(poLayer->GetLayerDefn());
+
+	if (fieldTypes.size() != 2)
+		return;
+
+	for (auto i = 0; i < fieldTypes.size(); ++i) {
+		switch (fieldTypes[i]) {
+		case OGRFieldType::OFTInteger:
+			poFeature->SetField(headers[i].c_str(), curr_int);
+			break;
+		case OGRFieldType::OFTReal:
+			poFeature->SetField(headers[i].c_str(), curr_int);
+			break;
+		default:
+			//If no compatible type is available, try to store the field as string
+			poFeature->SetField(headers[i].c_str(), curr_string);
+			break;
+		}
+	}
+
+	generateWKT(x, y, sWKT);
+	OGRGeometryFactory::createFromWkt(sWKT, NULL, &poGeometry);
+	poFeature->SetGeomFieldDirectly(0, poGeometry);
+
+
+	if (poLayer->CreateFeature(poFeature) != OGRERR_NONE) {
+		printf("Failed to create feature.\n");
+	}
+
+	poDataSet->FlushCache();
+}
+
+void ShpFileWriter::writeCStringIntGPSEfficient(const char* curr_string, int dist, double x, double y, double heading, int fixStatus)
+{
+	OGRFeature* poFeature;
+	OGRGeometry* poGeometry;
+	char sWKT[60];
+
+	poFeature = OGRFeature::CreateFeature(poLayer->GetLayerDefn());
+
+	if (fieldTypes.size() != 4)
+		return;
+
+	poFeature->SetField(headers[0].c_str(), curr_string);
+	poFeature->SetField(headers[1].c_str(), dist);
+	poFeature->SetField(headers[2].c_str(), heading);
+	poFeature->SetField(headers[3].c_str(), fixStatus);
+
+	generateWKT(x, y, sWKT);
+	OGRGeometryFactory::createFromWkt(sWKT, NULL, &poGeometry);
+	poFeature->SetGeomFieldDirectly(0, poGeometry);
+
+
+	if (poLayer->CreateFeature(poFeature) != OGRERR_NONE) {
+		printf("Failed to create feature.\n");
+	}
+
+	poDataSet->FlushCache();
+}
+
 void ShpFileWriter::writeMultiValue(std::string valAsCsv, double x, double y)
 {
 	OGRFeature *poFeature;
