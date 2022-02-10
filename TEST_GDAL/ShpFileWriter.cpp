@@ -144,7 +144,7 @@ void ShpFileWriter::writeSingleValue(double val, double x, double y)
 	poDataSet->FlushCache();
 }
 
-void ShpFileWriter::writeSingleValueString(char* val, double x, double y)
+void ShpFileWriter::writeSingleValueString(const char* val, double x, double y)
 {
 	OGRFeature* poFeature;
 	OGRGeometry* poGeometry;

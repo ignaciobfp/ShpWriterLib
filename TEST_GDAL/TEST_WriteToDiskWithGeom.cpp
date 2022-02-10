@@ -1,4 +1,4 @@
-// TEST_GDAL.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
+// TEST_GDAL_x86.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
 //
 #pragma warning(disable : 4996)
 #include <iostream>
