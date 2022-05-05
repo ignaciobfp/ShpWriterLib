@@ -2,6 +2,7 @@
 
 int main()
 {
+	int returnvalue = 0;
 	//setenv("PROJ_LIB", "C:\\Users\\Televitis\\source\\repos\\ShpLib_x86\\Debug", true);
 	
 	//char* pathToCurrentFolder = (char*) malloc(MAX_PATH);
@@ -16,7 +17,18 @@ int main()
 		mbstowcs(wtext, text.c_str(), text.length() + 1);//plus null
 		LPWSTR ptr = wtext;
 
-		SetPermanentEnvironmentVariable(L"PROJ_LIB", ptr);
+		if (SetPermanentEnvironmentVariable(L"PROJ_LIB", ptr)) {
+			cout << "Environment variable succesfully set" << endl;
+			returnvalue = 0;
+		}
+		else {
+			cout << "There was an error setting the environment variable. Was program run as admin?" << endl;
+			returnvalue = 1;
+		};
 	}
+	else {
+		cout << "No changes to the environment variables were performed" << endl;
+	}
+	return returnvalue;
 	//free(pathToCurrentFolder);
 }
