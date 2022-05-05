@@ -67,7 +67,7 @@
       </PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SOLUTIONDIR)..\gdal-3.4.1-x86\;$(SOLUTIONDIR)..\gdal-3.4.1-x86\gcore;$(SOLUTIONDIR)..\gdal-3.4.1-x86\apps;$(SOLUTIONDIR)..\gdal-3.4.1-x86\port;$(SOLUTIONDIR)..\gdal-3.4.1-x86\ogr;$(SOLUTIONDIR)..\gdal-3.4.1-x86\ogr\ogrsf_frmts</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -95,7 +95,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\*.db" "$(TargetDir)"</Command>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SOLUTIONDIR)..\gdal-3.4.1-x86\;$(SOLUTIONDIR)..\gdal-3.4.1-x86\gcore;$(SOLUTIONDIR)..\gdal-3.4.1-x86\apps;$(SOLUTIONDIR)..\gdal-3.4.1-x86\port;$(SOLUTIONDIR)..\gdal-3.4.1-x86\ogr;$(SOLUTIONDIR)..\gdal-3.4.1-x86\ogr\ogrsf_frmts</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
